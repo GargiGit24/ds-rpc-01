@@ -41,6 +41,31 @@ def test(user=Depends(authenticate)):
 
 
 # Protected chat endpoint
+from app.services.rag_service import query_rag
+from pydantic import BaseModel
+
+class ChatRequest(BaseModel):
+    message: str
+
 @app.post("/chat")
-def query(user=Depends(authenticate), message: str = "Hello"):
-    return "Implement this endpoint."
+def query(request: ChatRequest, user=Depends(authenticate)):
+    try:
+        answer, sources = query_rag(request.message, user["role"])
+        return {
+            "answer": answer,
+            "sources": sources,
+            "role": user["role"]
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+# @app.post("/chat")
+# def query(user=Depends(authenticate), message: str = "Hello"):
+#     try:
+#         answer, sources = query_rag(message, user["role"])
+#         return {
+#             "answer": answer,
+#             "sources": sources,
+#             "role": user["role"]
+#         }
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=str(e))
