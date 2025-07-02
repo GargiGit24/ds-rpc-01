@@ -21,7 +21,7 @@ def get_vectorstore(role: str):
     else:
         return ingest_docs(role, persist_dir, embeddings)
 
-def ingest_docs(role: str, persist_dir: str, embeddings):
+def ingest_docs(role: str, persist_dir: str):
     """
     Loads docs from `resources/data/<role>`, splits, embeds and stores them
     """
@@ -38,7 +38,7 @@ def ingest_docs(role: str, persist_dir: str, embeddings):
         doc.metadata["source"] = os.path.basename(doc.metadata.get("source", "unknown"))
 
     # 4. Split into chunks
-    splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+    splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=100)
     docs = splitter.split_documents(documents)
     print(f"[INFO] Split into {len(docs)} chunks")
 

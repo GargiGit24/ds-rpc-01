@@ -14,7 +14,7 @@ users_db: Dict[str, Dict[str, str]] = {
     "Sam": {"password": "financepass", "role": "finance"},
     "Peter": {"password": "pete123", "role": "engineering"},
     "Sid": {"password": "sidpass123", "role": "marketing"},
-    "Natasha": {"passwoed": "hrpass123", "role": "hr"}
+    "Natasha": {"password": "hrpass123", "role": "hr"}
 }
 
 
@@ -58,14 +58,3 @@ def query(request: ChatRequest, user=Depends(authenticate)):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-# @app.post("/chat")
-# def query(user=Depends(authenticate), message: str = "Hello"):
-#     try:
-#         answer, sources = query_rag(message, user["role"])
-#         return {
-#             "answer": answer,
-#             "sources": sources,
-#             "role": user["role"]
-#         }
-#     except Exception as e:
-#         raise HTTPException(status_code=500, detail=str(e))
